@@ -1,0 +1,46 @@
+
+
+
++-------------------+--------+   +-------------------+--------+
+|     step         5| TCM2209|   |     dir     Pin 17| TCM2209|
+|     dir          4|  01    |   |     step    Pin 16|  05    |
+|     io    MCP 25_0|        |   |     io    MCP 24_0|        |
+|                   +--------+   |                   +--------+
+|     step         5| TCM2209|   |     dir     Pin 14| TCM2209|
+|     dir          4|  02    |   |     step    Pin 15|  06    |
+|     en    MCP 25_1|        |   |     en    MCP 24_1|        |
+|                   +--------+   |                   +--------+
+|     step         5| TCM2209|   |     dir     Pin 21| TCM2209|
+|     dir          4|  03    |   |     step    Pin 20|  07    |
+|     en    MCP 25_2|        |   |     en    MCP 24_2|        |
+|                   +--------+   |                   +--------+
+|     step         5| TCM2209|   |     dir     Pin 23| TCM2209|
+|     dir          4|  04    |   |     step    Pin 22|  08    |
+|     en    MCP 25_3|        |   |     en    MCP 24_3|        |
+|                   +--------+   |                   +--------+
+|     I/O 00        MCP 20_6 |   |     I/O 12        MCP 21_6 |
+|     I/O 01        MCP 25_4 |   |     I/O 13        MCP 24_4 |
+|     I/O 02        MCP 25_5 |   |     I/O 14        MCP 24_5 |
+|     I/O 03        MCP 25_6 |   |     I/O 15        MCP 24_6 |
+|                            |   |                            |
+|     I/O 04        MCP 20_0 |   |     I/O 16        MCP 21_0 |
+|     I/O 05        MCP 20_1 |   |     I/O 17        MCP 21_1 |
+|     I/O 06        MCP 20_2 |   |     I/O 18        MCP 21_2 |
+|     I/O 07        MCP 20_3 |   |     I/O 19        MCP 21_3 |
+|     I/O 08        MCP 20_4 |   |     I/O 20        MCP 21_4 |
+|     I/O 09        MCP 20_5 |   |     I/O 21        MCP 21_5 |
+|     I/O 10        MCP 20_6 |   |     I/O 22        MCP 21_6 |
+|     I/O 11        MCP 20_7 |   |     I/O 23        MCP 21_7 |
++----------------------------+   +----------------------------+
+
+
+Motor:
+
+MCP Adres       I2C
+Step            Pin
+Dir             Pin
+enable          MCP_Pin
+serial          &serial -> pointer naar seriele poort
+Driver adress   0bxx
+TMC2209         Driver  -> &Serial, [Rsense], Driver adress
+
