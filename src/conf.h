@@ -49,18 +49,18 @@
 // mcp1 en mcp3 Kunnen worden verbonden met eindstops
 // mcp2 en mcp4 Kunnen worden gebruikt al GPIO
 
-#define MCP_1_ADRESS 25 
-#define MCP_2_ADRESS 20 
+#define MCP_1_ADRESS 0x25 
+#define MCP_2_ADRESS 0x20 
 
-#define MCP_3_ADRESS 24 
-#define MCP_4_ADRESS 21
+#define MCP_3_ADRESS 0x24 
+#define MCP_4_ADRESS 0x21
 
 #define IO_A 25
 
-// mcp pins voor enablen van de TCM2209 motordrivers
+// serial adress for TCM2209 motordrivers
 
 #define MOTOR1_ADRESS 0b00
-#define MOTOR2_ADRESS 0b01
+#define MOTOR2_ADRESS 0b11
 #define MOTOR3_ADRESS 0b10
 #define MOTOR4_ADRESS 0b11
 #define MOTOR5_ADRESS 0b00
@@ -71,9 +71,9 @@
 // mcp pins voor enablen van de TCM2209 motordrivers
 
 #define MOTOR1_ENABLE 0
-#define MOTOR2_ENABLE 1
+#define MOTOR2_ENABLE 3  // aanpassing gemeten
 #define MOTOR3_ENABLE 2
-#define MOTOR4_ENABLE 3
+#define MOTOR4_ENABLE 1
 #define MOTOR5_ENABLE 0
 #define MOTOR6_ENABLE 1
 #define MOTOR7_ENABLE 2

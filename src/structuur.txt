@@ -1,0 +1,12 @@
+TMC2209 Stepper
+     HardwareSerial *serial  // seral verbinding met de drivers
+     int stepperadres  // serial adres
+     -> tmc2209 stepper functies
+
+Adafruit_MCP23008
+    Adafruit_MCP23008 * (i2c)  
+    enable pin motordriver 
+    overige I/O
+
+Teensystepper
+    bewegingsfuncties stepperdriver

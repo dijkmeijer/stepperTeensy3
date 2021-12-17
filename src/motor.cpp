@@ -4,41 +4,68 @@
 
 #define R_SENSE 0.11f
 
-
-
 c_motor::c_motor(){
+    serialPort = &Serial1;
+    R_sense = R_SENSE;
+    serialAdres =  MOTOR1_ADRESS;
+    
     stepPin = 5;
     dirPin = 4;
-    setAdres(&Serial1, 0x25, 0);
-    R_sense = R_SENSE;
-    driver =  new TMC2209Stepper(serialPort, R_sense, serialAdres);
-    motor = new Stepper(stepPin, dirPin);
+    enablePin = MOTOR1_ENABLE;
+    
+
+    init();
 }
 
 // initialiseer motor met seriele poort, mcp i2c adres, serieel adres van de tmc2209
 
-c_motor::c_motor(comm * _comm,
-    uint8_t _mcp_adres, uint8_t _serial_adres, uint8_t _stepPin, uint8_t _dirPin, uint8_t _enablePin){
+c_motor::c_motor(HardwareSerial *_serialPort, Adafruit_MCP23008 *_mcpDriver,
+    uint8_t _serial_adres, uint8_t _stepPin, uint8_t _dirPin, uint8_t _enablePin){
+    serialPort = _serialPort;
+    mcpDriver = _mcpDriver;
+    serialAdres = _serial_adres;
     stepPin = _stepPin;
     dirPin = _dirPin;
     enablePin = _enablePin;
+
     R_sense = R_SENSE;
-    setAdres(_comm->serport, _mcp_adres, _serial_adres);
-    setMCP(_comm->mcpDriver, _comm->mcpGpio);
+
+
+
+    init();
+
+
+}
+
+uint8_t c_motor::init(){
     driver =  new TMC2209Stepper(serialPort, R_sense, serialAdres);
+ 
     motor = new Stepper(stepPin, dirPin);
+    // pinMode(stepPin, OUTPUT);
+    // pinMode(dirPin, OUTPUT);   
+    // mcpDriver->begin(MCP_1_ADRESS);
+    mcpDriver->pinMode(enablePin, OUTPUT);
+    mcpDriver->digitalWrite(enablePin, LOW);
+    
+    
+    // driver->begin();          // SPI:  Init CS pins and possible SW SPI pins
+    //                        // UART: Init SW UART (if selected) with default 115200 baudrate
+    // driver->toff(3);          // Enables driver in software
+    // driver->rms_current(300); // Set motor RMS current
+    // driver->microsteps(4);    // Set microsteps to 1/16th
+
+    motor->setMaxSpeed(200).
+        setAcceleration(1000); // steps/s^2
+    return 0;
 }
 
-// set tijdens of verander adresgegevens van de motor driver na initialisatie
-int c_motor::setAdres(Stream * _serport, uint8_t _mcp_adres, uint8_t _serial_adres){
-    mcpAdres = _mcp_adres;
-    serialAdres = _serial_adres;
-    serialPort = _serport;
-    return 0;
-};
-
-int c_motor::setMCP(Adafruit_MCP23008 * _mcpDriver, Adafruit_MCP23008 * _mcpGpio){
-    mcp_driver = _mcpDriver;
-    mcp_GPIO = _mcpGpio;
-    return 0;
+uint8_t c_motor::print(){
+    // Serial.println(enablePin);
+    // Serial.println(serialAdres);
+    // Serial.println((int)mcpDriver);
+    Serial.print(stepPin);
+    Serial.print(" ");
+    Serial.println(dirPin);
+   return 0;
 }
+
