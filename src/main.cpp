@@ -10,14 +10,8 @@
 #include "TeensyStep.h"
 #include "motor.hpp"
 #include "conf.h"
-
-Adafruit_MCP23008 mcp1;
-Adafruit_MCP23008 mcp2;
-Adafruit_MCP23008 mcp3;
-Adafruit_MCP23008 mcp4;
-
-c_motor *m[8];
-Stepper *s[2]; 
+#include "parser.hpp"
+#include "board.hpp"
 
 //#define EN_PIN MOTOR1_ENABLE   // Enable
 // #define DIR_PIN M1_DIR_PIN  // Direction
@@ -36,11 +30,6 @@ StepControl controller;           // Use default settings
                       // Panucatt BSD2660 uses 0.1                    
                       // Watterott TMC5160 uses 0.075
 
-#if SW_CAPABLE_PLATFORM
-#pragma message("software serial")
-#else
-  #pragma message("hardware serial")
-#endif
 
 void setup()
 {
@@ -56,55 +45,46 @@ void setup()
                              // driver.beginSerial(115200);     // SW UART drivers
   // m[0] = new c_motor;
   //mcp = new Adafruit_MCP23008; 
+
   mcp1.begin(MCP_1_ADRESS);
- mcp2.begin(MCP_2_ADRESS);
- mcp3.begin(MCP_3_ADRESS);
- mcp4.begin(MCP_4_ADRESS);
-delay(5000);
-  Serial.println("begin");
-  Serial.println(int(&mcp1));
-  Serial.println(int(&mcp2));
-  Serial.println(int(&mcp3));
-  Serial.println(int(&mcp4));
-  
-   m[0] = new c_motor(&SERIAL_PORT, &mcp1, MOTOR1_ADRESS, M1_STEP_PIN, M1_DIR_PIN, MOTOR1_ENABLE);
-   m[1] = new c_motor(&SERIAL_PORT, &mcp1, MOTOR2_ADRESS, M2_STEP_PIN, M2_DIR_PIN, MOTOR2_ENABLE);
-   m[0]->motor;// driver.en_spreadCycle(false);   // Toggle spreadCycle on TMC2208/2209/2224
-   m[1]->motor;// driver.en_spreadCycle(false);   // Toggle spreadCycle on TMC2208/2209/2224
+  mcp2.begin(MCP_2_ADRESS);
+  mcp3.begin(MCP_3_ADRESS);
+  mcp4.begin(MCP_4_ADRESS);
+
+
+   m[0] = new c_motor(&SERIAL_PORT, &mcp1, MOTOR1_ADRESS, &M1, MOTOR1_ENABLE);
+   m[1] = new c_motor(&SERIAL_PORT, &mcp1, MOTOR2_ADRESS, &M2, MOTOR2_ENABLE);
+   m[2] = new c_motor(&SERIAL_PORT, &mcp1, MOTOR3_ADRESS, &M3, MOTOR3_ENABLE);
+   m[3] = new c_motor(&SERIAL_PORT, &mcp1, MOTOR4_ADRESS, &M4, MOTOR4_ENABLE);
   // driver.pwm_autoscale(true); // Needed for stealthChop
 
+  m[0]->setSpeed(800);
+  m[1]->setSpeed(800);
+  m[2]->setSpeed(800);
+  m[3]->setSpeed(800);
+  m[0]->setAcceleration(2500);
+  m[1]->setAcceleration(2500);
+  m[2]->setAcceleration(2500);
+  m[3]->setAcceleration(2500);
 }
 
 bool shaft = false;
-
 void loop()
 {
-  // // Run 5000 steps and switch direction in software
-  // for (uint16_t i = 5000; i > 0; i--)
-  // {
-  //   digitalWrite(STEP_PIN, HIGH);
-  //   delayMicroseconds(100);
-  //   digitalWrite(STEP_PIN, LOW);
-  //   delayMicroseconds(100);
-  // }
-  // shaft = !shaft;
-  // driver.shaft(shaft);
-  // m[0]->motor->setTargetAbs (5.18 * 800); // Set target position to 1000 steps from current position
-  // m[1]->motor->setTargetAbs(2.59 * 800); // Set target position to 1000 steps from current position
-  m[0]->motor->setTargetRel( 800); // Set target position to 1000 steps from current position
-  m[1]->motor->setTargetRel( 800); // Set target position to 1000 steps from current position
-  controller.move(m[0]->motor, m[1]->motor);         // Do the move
-delay(1000);
-  //     Serial.println(int(&mcp));
-  //     mcp.pinMode(0, OUTPUT);
-  //     mcp.digitalWrite(0, HIGH);
-  //     mcp.pinMode(3, OUTPUT);
-  //     mcp.digitalWrite(3, HIGH);
-  // delay(2000);
-  //     mcp.pinMode(0, OUTPUT);
-  //     mcp.digitalWrite(0, LOW);
-  //     mcp.pinMode(3, OUTPUT);
-  //     mcp.digitalWrite(3, LOW);
-  // shaft = !shaft;
-  // driver.shaft(shaft);
+  m[0]->microstep(16);
+  m[1]->microstep(16);
+  m[2]->microstep(4);
+  m[3]->microstep(4);
+  M1.setTargetRel(3200); // Set target position to 1000 steps from current position
+  M2.setTargetRel(3200); // Set target position to 1000 steps from current position
+  M3.setTargetRel(4160); // Set target position to 1000 steps from current position
+  M4.setTargetRel(4160); // Set target position to 1000 steps from current position
+  controller.move(M1, M2, M3, M4);         // Do the move
+  delay(20);
+  m[0]-> reverse();
+  m[1]-> reverse();
+  m[2]-> reverse();
+  m[3]-> reverse();
+
 }
+ 

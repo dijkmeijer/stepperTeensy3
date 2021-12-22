@@ -5,12 +5,12 @@
 
 #define M1_DIR_PIN  5
 #define M1_STEP_PIN 4
-#define M2_DIR_PIN  2
-#define M2_STEP_PIN 3
-#define M3_DIR_PIN  7
-#define M3_STEP_PIN 6
-#define M4_DIR_PIN  11
-#define M4_STEP_PIN 8
+#define M2_DIR_PIN  11
+#define M2_STEP_PIN 8
+#define M3_DIR_PIN  2
+#define M3_STEP_PIN 3
+#define M4_DIR_PIN  7
+#define M4_STEP_PIN 6
 #define M5_DIR_PIN  17
 #define M5_STEP_PIN 16
 #define M6_DIR_PIN  14
@@ -61,19 +61,19 @@
 
 #define MOTOR1_ADRESS 0b00
 #define MOTOR2_ADRESS 0b11
-#define MOTOR3_ADRESS 0b10
-#define MOTOR4_ADRESS 0b11
+#define MOTOR3_ADRESS 0b01
+#define MOTOR4_ADRESS 0b10
 #define MOTOR5_ADRESS 0b00
-#define MOTOR6_ADRESS 0b01
+#define MOTOR6_ADRESS 0b11
 #define MOTOR7_ADRESS 0b10
-#define MOTOR8_ADRESS 0b11
+#define MOTOR8_ADRESS 0b10
 
 // mcp pins voor enablen van de TCM2209 motordrivers
 
 #define MOTOR1_ENABLE 0
-#define MOTOR2_ENABLE 3  // aanpassing gemeten
+#define MOTOR2_ENABLE 1  // aanpassing gemeten
 #define MOTOR3_ENABLE 2
-#define MOTOR4_ENABLE 1
+#define MOTOR4_ENABLE 3
 #define MOTOR5_ENABLE 0
 #define MOTOR6_ENABLE 1
 #define MOTOR7_ENABLE 2

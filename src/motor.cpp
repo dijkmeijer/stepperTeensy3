@@ -30,6 +30,24 @@ c_motor::c_motor(HardwareSerial *_serialPort, Adafruit_MCP23008 *_mcpDriver,
 
     R_sense = R_SENSE;
 
+    motor = new Stepper(stepPin, dirPin);
+
+    init();
+
+
+}
+
+c_motor::c_motor(HardwareSerial *_serialPort, Adafruit_MCP23008 *_mcpDriver,
+    uint8_t _serial_adres, Stepper *_motor, uint8_t _enablePin){
+    serialPort = _serialPort;
+    mcpDriver = _mcpDriver;
+    serialAdres = _serial_adres;
+
+    enablePin = _enablePin;
+    motor = _motor;
+
+    R_sense = R_SENSE;
+
 
 
     init();
@@ -37,25 +55,26 @@ c_motor::c_motor(HardwareSerial *_serialPort, Adafruit_MCP23008 *_mcpDriver,
 
 }
 
+
 uint8_t c_motor::init(){
     driver =  new TMC2209Stepper(serialPort, R_sense, serialAdres);
  
-    motor = new Stepper(stepPin, dirPin);
+    
     // pinMode(stepPin, OUTPUT);
     // pinMode(dirPin, OUTPUT);   
     // mcpDriver->begin(MCP_1_ADRESS);
     mcpDriver->pinMode(enablePin, OUTPUT);
     mcpDriver->digitalWrite(enablePin, LOW);
+    shaft = false;
     
-    
-    // driver->begin();          // SPI:  Init CS pins and possible SW SPI pins
-    //                        // UART: Init SW UART (if selected) with default 115200 baudrate
-    // driver->toff(3);          // Enables driver in software
-    // driver->rms_current(300); // Set motor RMS current
-    // driver->microsteps(4);    // Set microsteps to 1/16th
+    driver->begin();          // SPI:  Init CS pins and possible SW SPI pins
+                           // UART: Init SW UART (if selected) with default 115200 baudrate
+    driver->toff(3);          // Enables driver in software
+    driver->rms_current(300); // Set motor RMS current
+    driver->microsteps(4);    // Set microsteps to 1/16th
 
-    motor->setMaxSpeed(200).
-        setAcceleration(1000); // steps/s^2
+    motor->setMaxSpeed(500).
+        setAcceleration(40000); // steps/s^2
     return 0;
 }
 
@@ -69,3 +88,33 @@ uint8_t c_motor::print(){
    return 0;
 }
 
+uint8_t c_motor::enable(uint8_t i)
+{
+    driver->toff(i); 
+    return 0;
+}
+
+uint8_t c_motor::microstep(uint16_t n)
+{
+    driver->microsteps(n);
+    return 0;
+}
+
+uint8_t c_motor::setSpeed(uint16_t s)
+{
+    motor->setMaxSpeed(s);
+    return 0;
+}
+
+uint8_t c_motor::setAcceleration(uint16_t a)
+{
+    motor->setAcceleration(a);
+    return 0;
+}
+
+uint8_t c_motor::reverse()
+{
+    shaft = !shaft;
+    driver->shaft(shaft);
+    return 0;
+}

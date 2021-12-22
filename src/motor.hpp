@@ -22,15 +22,22 @@ class c_motor {
                          // HardwareSerial * serialPort, Adafruit_MCP23008 *_mcpDriver, 
                          // uint8_t Serial adres, uint8_t mcp_driveradres,
                          // uint8_t dirPin, uint8_t stepPin, uint8_t MCP_enablePin  
+        c_motor(HardwareSerial *, Adafruit_MCP23008 *, uint8_t,  Stepper *, uint8_t);
         Stepper *motor;                 // motor driver step / dir controle
         TMC2209Stepper *driver;         // configuratie tmc2209 driver
         uint8_t print();
+        uint8_t enable(uint8_t);
+        uint8_t microstep(uint16_t);
+        uint8_t setSpeed(uint16_t);
+        uint8_t setAcceleration(uint16_t);
+        uint8_t reverse();
 
     private:
         uint8_t init();
         uint8_t stepPin;
         uint8_t dirPin;
         uint8_t enablePin;
+        bool shaft;
         float R_sense;                  // ref weerstand motor stroom
         uint8_t serialAdres;            // serial adres van de motordriver
         HardwareSerial *serialPort;             // serial post voor driver configuratie
