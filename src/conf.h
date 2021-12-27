@@ -1,16 +1,22 @@
 #ifndef CONF_H
 #define CONF_H
 
+#define R_SENSE 0.11f // Match to your driver                         
+                      // SilentStepStick series use 0.11              
+                      // UltiMachine Einsy and Archim2 boards use 0.2 
+                      // Panucatt BSD2660 uses 0.1                    
+                      // Watterott TMC5160 uses 0.075
+
 // Step en Dir pins van de diverse TCM2209 drivers
 
 #define M1_DIR_PIN  5
 #define M1_STEP_PIN 4
 #define M2_DIR_PIN  11
 #define M2_STEP_PIN 8
-#define M3_DIR_PIN  2
-#define M3_STEP_PIN 3
-#define M4_DIR_PIN  7
-#define M4_STEP_PIN 6
+#define M3_DIR_PIN  7
+#define M3_STEP_PIN 6
+#define M4_DIR_PIN  2
+#define M4_STEP_PIN 3
 #define M5_DIR_PIN  17
 #define M5_STEP_PIN 16
 #define M6_DIR_PIN  14
@@ -61,8 +67,8 @@
 
 #define MOTOR1_ADRESS 0b00
 #define MOTOR2_ADRESS 0b11
-#define MOTOR3_ADRESS 0b01
-#define MOTOR4_ADRESS 0b10
+#define MOTOR3_ADRESS 0b10
+#define MOTOR4_ADRESS 0b01
 #define MOTOR5_ADRESS 0b00
 #define MOTOR6_ADRESS 0b11
 #define MOTOR7_ADRESS 0b10

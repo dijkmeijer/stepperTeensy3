@@ -1,18 +1,56 @@
-#pragma once
+/*----------------------------------------------------------------------------
+BOARD.H
 
-#include <TMCStepper.h>
+Note: #define BOARD_DECLS 1 before including this file to DECLARE and INITIALIZE
+global variables.  Include this file without defining BOARD_DECLS to extern
+these variables.
+----------------------------------------------------------------------------*/
+#ifndef BOARD_DEFS          // Make sure this file is included only once
+#define BOARD_DEFS 
+
 #include "Adafruit_MCP23008.h"
-#include "TeensyStep.h"
+
 #include "motor.hpp"
 #include "conf.h"
 
-Adafruit_MCP23008 mcp1;
-Adafruit_MCP23008 mcp2;
-Adafruit_MCP23008 mcp3;
-Adafruit_MCP23008 mcp4;
+/*----------------------------------------------
+Setup variable declaration macros.
+----------------------------------------------*/
+#ifndef BOARD_DECLS
+#pragma message("extern")
+# define _DECL extern
+# define _INIT(x)
+#else
+#pragma message("intern")
+# define _DECL
+# define _INIT(x)  = x
+#endif
 
-Stepper M1(M1_STEP_PIN,M1_DIR_PIN);
-Stepper M2(M2_STEP_PIN,M2_DIR_PIN);
-Stepper M3(M3_STEP_PIN,M3_DIR_PIN);
-Stepper M4(M4_STEP_PIN,M4_DIR_PIN);
-c_motor *m[8];
+/*----------------------------------------------
+Declare variables as follows:
+
+_DECL [standard variable declaration] _INIT(x);
+
+where x is the value with which to initialize
+the variable.  If there is no initial value for
+the variable, it may be declared as follows:
+
+_DECL [standard variable declaration];
+----------------------------------------------*/
+
+// _DECL int var_a _INIT(100);
+// _DECL int var_b;
+// _DECL int var_c _INIT(27);
+
+_DECL Adafruit_MCP23008 mcp1;
+_DECL Adafruit_MCP23008 mcp2;
+_DECL Adafruit_MCP23008 mcp3;
+_DECL Adafruit_MCP23008 mcp4;
+
+_DECL  c_motor *m[8];
+
+uint8_t initMCP();
+
+#endif
+/*----------------------------------------------------------------------------
+----------------------------------------------------------------------------*/

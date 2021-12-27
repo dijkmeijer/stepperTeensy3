@@ -1,6 +1,7 @@
 // initialiseer motor met default waarden
 
 #include "motor.hpp"
+#include "conf.h"
 
 #define R_SENSE 0.11f
 
@@ -27,29 +28,27 @@ c_motor::c_motor(HardwareSerial *_serialPort, Adafruit_MCP23008 *_mcpDriver,
     stepPin = _stepPin;
     dirPin = _dirPin;
     enablePin = _enablePin;
-
     R_sense = R_SENSE;
-
     motor = new Stepper(stepPin, dirPin);
 
     init();
 
 
 }
-
-c_motor::c_motor(HardwareSerial *_serialPort, Adafruit_MCP23008 *_mcpDriver,
-    uint8_t _serial_adres, Stepper *_motor, uint8_t _enablePin){
+//  c_motor(HardwareSerial *, uint8_t serialadres, Adafruit_MCP23008 *, uint8_t, uint8_t, Stepper *, uint8_t, uint8_t)
+//  hardwareserial_X, mcpdriver*, MCPadres, enablePin,  stepper*, motorAdress, Stepin, dirPin)
+c_motor::c_motor(HardwareSerial *_serialPort, uint8_t _serialadres,
+                 Adafruit_MCP23008 *_mcpDriver, uint8_t _enablePin,
+                 uint8_t _stepPin, uint8_t _dirPin){
     serialPort = _serialPort;
     mcpDriver = _mcpDriver;
-    serialAdres = _serial_adres;
-
+    serialAdres = _serialadres;
+    stepPin = _stepPin;
+    dirPin = _dirPin;
     enablePin = _enablePin;
-    motor = _motor;
 
     R_sense = R_SENSE;
-
-
-
+    motor = new Stepper(stepPin, dirPin);
     init();
 
 
