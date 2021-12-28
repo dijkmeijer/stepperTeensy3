@@ -19,12 +19,12 @@
 #define M4_STEP_PIN 3
 #define M5_DIR_PIN  17
 #define M5_STEP_PIN 16
-#define M6_DIR_PIN  14
-#define M6_STEP_PIN 15
-#define M7_DIR_PIN  21
-#define M7_STEP_PIN 20
-#define M8_DIR_PIN  23
-#define M8_STEP_PIN 22
+#define M6_DIR_PIN  23
+#define M6_STEP_PIN 22
+#define M7_DIR_PIN  14
+#define M7_STEP_PIN 15
+#define M8_DIR_PIN  21
+#define M8_STEP_PIN 20
 
 //  Serial pins, wordt automatisch geconfigureerd
 
@@ -71,7 +71,7 @@
 #define MOTOR4_ADRESS 0b01
 #define MOTOR5_ADRESS 0b00
 #define MOTOR6_ADRESS 0b11
-#define MOTOR7_ADRESS 0b10
+#define MOTOR7_ADRESS 0b01
 #define MOTOR8_ADRESS 0b10
 
 // mcp pins voor enablen van de TCM2209 motordrivers
