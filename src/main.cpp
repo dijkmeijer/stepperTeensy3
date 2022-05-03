@@ -14,11 +14,13 @@
 
 // controller voor het aansturen van de verschillende motoren
 StepControl controller; // Use default settings
+RotateControl Rcontroller;
+
 
 void setup()
 {
 
-  Serial.begin(9600);    // communicatie via USB<->serial
+  Serial.begin(115200);    // communicatie via USB<->serial
   Serial1.begin(115200); // HW UART drivers voor motor 1..4
   Serial2.begin(115200); // HW UART drivers voor motor 5..8
 
@@ -36,28 +38,27 @@ void setup()
   m[7] = new c_motor(&Serial2, MOTOR8_ADRESS, &mcp3, MOTOR8_ENABLE, M8_STEP_PIN, M8_DIR_PIN);
   // driver.pwm_autoscale(true); // Needed for stealthChop
 
-  m[0]->setSpeed(1900);
-  m[1]->setSpeed(1900);
-  m[2]->setSpeed(1900);
-  m[3]->setSpeed(1900);
-  m[4]->setSpeed(1900);
-  m[5]->setSpeed(1900);
-  m[6]->setSpeed(1900);
-  m[7]->setSpeed(1900);
+   m[0]->setSpeed(500);
+  // m[1]->setSpeed(19000);
+  // m[2]->setSpeed(19000);
+  // m[3]->setSpeed(19000);
+  // m[4]->setSpeed(19000);
+  // m[5]->setSpeed(19000);
+  // m[6]->setSpeed(19000);
+  // m[7]->setSpeed(19000);
 
-  m[0]->setAcceleration(1700);
-  m[1]->setAcceleration(1700);
-  m[2]->setAcceleration(1700);
-  m[3]->setAcceleration(1700);
-  m[4]->setAcceleration(1700);
-  m[5]->setAcceleration(1700);
-  m[6]->setAcceleration(1700);
-  m[7]->setAcceleration(1700);
+  m[0]->setAcceleration(2000);
+  m[1]->setAcceleration(2000);
+  m[2]->setAcceleration(2000);
+  m[3]->setAcceleration(2000);
+  m[4]->setAcceleration(2000);
+  m[5]->setAcceleration(2000);
+  m[6]->setAcceleration(2000);
   
   m[0]->microstep(16);
   m[1]->microstep(16);
   m[2]->microstep(16);
-  m[3]->microstep(4);
+  m[3]->microstep(16);
   m[4]->microstep(16);
   m[5]->microstep(16);
   m[6]->microstep(16);
@@ -65,6 +66,7 @@ void setup()
 
    m[0]->reverse();
    m[1]->reverse();
+
 }
 
 void loop()
@@ -80,14 +82,18 @@ void loop()
   // // controller.move(*m[0]->motor, *m[1]->motor, *m[2]->motor, *m[3]->motor);         // Do the move
   //     controller.move(*m[0]->motor, *m[1]->motor, *m[2]->motor, *m[3]->motor, *m[4]->motor, *m[5]->motor, *m[6]->motor, *m[7]->motor); // Do the move
 
-  delay(20);
+  // delay(20);
   
 
 
   if (Serial.available() > 0)
   {
+       Rcontroller.rotateAsync(*m[0]->motor);
+    Serial.println(Serial.available());
+
     if (GCode.AddCharToLine(Serial.read()))
     {
+
       GCode.ParseLine();
       // Code to process the line of G-Code here…
 
@@ -96,7 +102,8 @@ void loop()
 
       GCode.RemoveCommentSeparators();
       execGcode(m, &GCode);
-      controller.move(*m[0]->motor, *m[1]->motor, *m[2]->motor, *m[3]->motor, *m[4]->motor, *m[5]->motor, *m[6]->motor, *m[7]->motor); // Do the move
+      controller.moveAsync(*m[1]->motor, *m[2]->motor, *m[3]->motor, *m[4]->motor, *m[5]->motor, *m[6]->motor, *m[7]->motor); // Do the move
+      while(controller.isRunning()) delay(0);
       Serial.println("ready");
     }
     

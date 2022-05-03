@@ -72,7 +72,7 @@ uint8_t c_motor::init(){
     driver->rms_current(300); // Set motor RMS current
     driver->microsteps(4);    // Set microsteps to 1/16th
 
-    motor->setMaxSpeed(500).
+    motor->setMaxSpeed(5000).
         setAcceleration(40000); // steps/s^2
     return 0;
 }
